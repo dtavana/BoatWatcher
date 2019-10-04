@@ -1,7 +1,7 @@
 {
   "name": "tgbl-bot",
   "version": "0.1.0",
-  "description": "Global ban list bot for all RCON supported games",
+  "description": "Watch mod logs in ",
   "scripts": {
     "build": "npm run lint && rm -rf dist && tsc",
     "build:dev": "rm -rf dist && tsc",

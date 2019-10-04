@@ -1,13 +1,13 @@
 import { Message } from 'eris';
 import { CommandArgumentType } from '.';
-import { TGBLCommandArgument } from '../ICommandArgument';
+import { ICommandArgument } from '../ICommandArgument';
 
 class StringArgumentType extends CommandArgumentType {
     constructor(client) {
         super(client, 'string');
     }
 
-    public async validate(val: string, msg: Message, arg: TGBLCommandArgument) {
+    public async validate(val: string, msg: Message, arg: ICommandArgument) {
         if (arg.min !== null && typeof arg.min !== 'undefined' && val.length < arg.min) {
             return `Please keep the ${arg.key} above or exactly ${arg.min} characters.`;
         }

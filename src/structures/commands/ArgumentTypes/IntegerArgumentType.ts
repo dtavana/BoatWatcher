@@ -1,13 +1,13 @@
 import { Message } from 'eris';
 import { CommandArgumentType } from '.';
-import { TGBLCommandArgument } from '../ICommandArgument';
+import { ICommandArgument } from '../ICommandArgument';
 
 class IntegerArgumentType extends CommandArgumentType {
     constructor(client) {
         super(client, 'float');
     }
 
-    public async validate(val, msg: Message, arg: TGBLCommandArgument) {
+    public async validate(val, msg: Message, arg: ICommandArgument) {
         const int = Number.parseInt(val, 10);
         if (Number.isNaN(int)) {
             return false;

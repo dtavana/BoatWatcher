@@ -1,10 +1,10 @@
 import pgPromise from 'pg-promise';
-import { BoatWatcherClient, TGBLConfig } from '../structures';
+import { BoatWatcherClient, IBoatWatcherClientConfig } from '../structures';
 
 class PostgresManager {
     private _db: any;
     private _client: BoatWatcherClient;
-    private _config: TGBLConfig;
+    private _config: IBoatWatcherClientConfig;
     constructor(client: BoatWatcherClient) {
         this._client = client;
         this._config = this._client.config;

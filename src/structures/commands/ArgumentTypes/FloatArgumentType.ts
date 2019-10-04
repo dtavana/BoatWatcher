@@ -1,13 +1,13 @@
 import { Message } from 'eris';
 import { CommandArgumentType } from '.';
-import { TGBLCommandArgument } from '../ICommandArgument';
+import { ICommandArgument } from '../ICommandArgument';
 
 class FloatArgumentType extends CommandArgumentType {
     constructor(client) {
         super(client, 'float');
     }
 
-    public async validate(val, msg: Message, arg: TGBLCommandArgument) {
+    public async validate(val, msg: Message, arg: ICommandArgument) {
         const float = Number.parseFloat(val);
         if (Number.isNaN(float)) {
             return false;

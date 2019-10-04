@@ -1,14 +1,14 @@
 import { Message, TextChannel } from 'eris';
 import { CommandArgumentType } from '.';
 import { disambiguation } from '../../../utils';
-import { TGBLCommandArgument } from '../ICommandArgument';
+import { ICommandArgument } from '../ICommandArgument';
 
 class UserArgumentType extends CommandArgumentType {
     constructor(client) {
         super(client, 'user');
     }
 
-    public async validate(val: string, msg: Message, arg: TGBLCommandArgument) {
+    public async validate(val: string, msg: Message, arg: ICommandArgument) {
         const textChannel = (msg.channel as TextChannel);
         const matches = val.match(/^(?:<@!?)?([0-9]+)>?$/);
         if (matches) {

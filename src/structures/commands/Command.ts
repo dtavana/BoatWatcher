@@ -1,19 +1,19 @@
-import {TGBLCommandArgument, TGBLCommandOptions} from '.';
+import {ICommandArgument, ICommandOptions} from '.';
 import {BoatWatcherClient} from '..';
 import {Context} from './Context';
 
-abstract class Command implements TGBLCommandOptions {
+abstract class Command implements ICommandOptions {
     public client: BoatWatcherClient;
     public name: string;
     public group: string | undefined;
     // Optional Command Options
     public sendError: boolean | undefined;
     public aliases: string[] | undefined;
-    public args: TGBLCommandArgument[] | undefined;
+    public args: ICommandArgument[] | undefined;
     public ownerOnly: boolean | undefined;
     public permissions: string[] | undefined;
 
-    protected constructor(client: BoatWatcherClient, options: TGBLCommandOptions) {
+    protected constructor(client: BoatWatcherClient, options: ICommandOptions) {
         this.client = client;
         this.name = options.name;
         this.group = options.group;

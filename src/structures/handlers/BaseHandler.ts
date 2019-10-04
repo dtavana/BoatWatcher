@@ -1,5 +1,5 @@
+import {EventEmitter} from 'events';
 import {BoatWatcherClient} from '../client';
-import EventEmitter = NodeJS.EventEmitter;
 
 abstract class BaseHandler extends EventEmitter {
     public client: BoatWatcherClient;

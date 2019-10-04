@@ -1,21 +1,20 @@
 import { GuildChannel, Message, TextChannel } from 'eris';
 import { CommandArgumentType } from '.';
 import { disambiguation } from '../../../utils';
-import { TGBLCommandArgument } from '../ICommandArgument';
+import { ICommandArgument } from '../ICommandArgument';
 
 class TextChannelArgumentType extends CommandArgumentType {
     constructor(client) {
         super(client, 'text-channel');
     }
 
-    public async validate(val: string, msg: Message, arg: TGBLCommandArgument) {
+    public async validate(val: string, msg: Message, arg: ICommandArgument) {
         const matches = val.match(/^(?:<#)?([0-9]+)>?$/);
         const textChannel = (msg.channel as TextChannel);
         if (matches) {
             try {
                 const channel = this.client.getChannel(matches[1]);
-                if (!channel || !(channel instanceof TextChannel)) { return false; }
-                return true;
+                return !(!channel || !(channel instanceof TextChannel));
             } catch (err) {
                 return false;
             }
