@@ -10,8 +10,8 @@ class MessageEvent extends BaseEvent {
                 return;
             } else {
                 client.loggers.sendLog(`Saw message: ${message.content}`, 'console');
-                client.loggers.sendLog('Emitting command handler event', 'console');
-                client.emit('handle-command', message);
+                client.loggers.sendLog('Emitting all message event handlers', 'console');
+                client.emit('handle-message', message);
             }
         });
     }
