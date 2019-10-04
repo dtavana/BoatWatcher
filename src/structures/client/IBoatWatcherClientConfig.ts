@@ -4,6 +4,8 @@ interface IBoatWatcherClientConfig {
     PG_CONNECTION: string;
     OWNERS: string[];
     FOOTER_TEXT: string;
+    DBL_GUILD_ID: string;
+    DBL_MOD_LOG_ID: string;
 }
 
 export { IBoatWatcherClientConfig };
