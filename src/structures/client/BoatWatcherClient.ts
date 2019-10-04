@@ -1,6 +1,5 @@
 import {Client} from 'eris';
 import {IBoatWatcherClientConfig} from '..';
-
 import {TestCommand} from '../../commands/test';
 import {EvalCommand} from '../../commands/utility/eval';
 import {ARGUMENT_TYPES} from '../../constants';
@@ -16,12 +15,11 @@ class BoatWatcherClient extends Client {
     public config: IBoatWatcherClientConfig;
     public defaultPrefix: string;
     public types: object;
-    // private _redis: RedisManager;
     public loggers: LoggerCollection;
     public handlers: BaseHandler[];
     public sendMessage: (func: any, ...data: any[]) => Promise<void>;
     public commands: Map<string, Command>;
-    //private pg: PostgresManager;
+    public pg: PostgresManager;
     constructor(config: IBoatWatcherClientConfig) {
         super(
             config.BOT_TOKEN,
@@ -86,7 +84,7 @@ class BoatWatcherClient extends Client {
             }
         });
 
-        // this.pg = new PostgresManager(this);
+        this.pg = new PostgresManager(this);
 
         this.connect().then(); // Connect to discord
         // Initialize events
