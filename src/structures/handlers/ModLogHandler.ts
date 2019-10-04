@@ -33,7 +33,7 @@ class ModLogHandler extends BaseHandler {
         };
         //TODO: Make more modular
         if(!embed || !(embed.title === 'Bot declined')) return;
-        let res: object = {};
+        let res: any = {};
         if (!embed.fields) return;
         for (const field of embed.fields) {
             const { name, value } = field;
@@ -48,7 +48,7 @@ class ModLogHandler extends BaseHandler {
             }
             res[name] = trueVal;
         }
-        console.log(res);
+        await this.client.pg.none("INSERT INTO decline-logs (botid, moderator, reason) VALUES ($1, $2, $3);", [res.Bot, res.Moderator, res.Reason]);
     }
 
 }
