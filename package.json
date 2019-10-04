@@ -1,7 +1,7 @@
 {
   "name": "tgbl-bot",
   "version": "0.1.0",
-  "description": "Watch mod logs in ",
+  "description": "Watch mod logs in DBL server",
   "scripts": {
     "build": "npm run lint && rm -rf dist && tsc",
     "build:dev": "rm -rf dist && tsc",
