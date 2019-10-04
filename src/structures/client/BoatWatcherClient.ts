@@ -21,7 +21,7 @@ class BoatWatcherClient extends Client {
     public handlers: BaseHandler[];
     public sendMessage: (func: any, ...data: any[]) => Promise<void>;
     public commands: Map<string, Command>;
-    private pg: PostgresManager;
+    //private pg: PostgresManager;
     constructor(config: IBoatWatcherClientConfig) {
         super(
             config.BOT_TOKEN,
@@ -77,8 +77,16 @@ class BoatWatcherClient extends Client {
             this.handlers.push(handler);
         }
 
-        this.pg = new PostgresManager(this);
-        // this._redis = new RedisManager(this);
+        this.addListener('handle-message', async (...data) => {
+            this.loggers.sendLog('Received message handle event', 'console');
+            for (const handle of this.handlers) {
+                this.loggers.sendLog(`Running ${handle.handlerName} handler`, 'console');
+                await handle.run(...data);
+                this.loggers.sendLog(`Ran ${handle.handlerName} handler`, 'console');
+            }
+        });
+
+        // this.pg = new PostgresManager(this);
 
         this.connect().then(); // Connect to discord
         // Initialize events
