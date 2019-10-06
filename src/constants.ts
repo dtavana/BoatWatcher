@@ -26,8 +26,8 @@ export const ALL_EMBEDS = {
 };
 
 export const ALL_HANDLERS = [
-    CommandHandler,
     ModLogHandler,
+    CommandHandler,
 ];
 
 export const ALL_EVENTS = [
