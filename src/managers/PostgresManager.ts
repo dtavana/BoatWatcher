@@ -15,7 +15,7 @@ class PostgresManager {
     }
     public async init(): Promise<void> {
         // Initalize tables here
-        await this.db.none('CREATE TABLE IF NOT EXISTS declinelogs (botid varchar, moderator varchar, reason varchar, recorded TIMESTAMP DEFAULT NOW());')
+        await this.db.none('CREATE TABLE IF NOT EXISTS declinelogs (botid varchar, moderator varchar, reason varchar, recorded TIMESTAMP DEFAULT NOW());');
         this._client.loggers.sendLog('Postgres Tables initialized', 'console', 'database');
     }
 
