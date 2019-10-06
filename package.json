@@ -18,6 +18,7 @@
     "eris": "^0.10.1",
     "js-yaml": "^3.13.1",
     "pg-promise": "^9.2.0",
+    "require-all": "^3.0.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
