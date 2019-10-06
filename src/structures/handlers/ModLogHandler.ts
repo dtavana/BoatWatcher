@@ -11,9 +11,8 @@ class ModLogHandler extends BaseHandler {
     public async run(message: Message): Promise<void> {
         const ctx = new Context(this.client, message, null);
         if (ctx.guild.id !== this.client.config.DBL_GUILD_ID || message.channel.id !== this.client.config.DBL_MOD_LOG_ID || message.embeds.length === 0) { return; }
-
         const embed: EmbedOptions = message.embeds[0];
-        if (!embed || !(embed.title === 'Bot declined')) { return; }
+        if (!embed || !embed.author || embed.author.name !== 'Bot declined') { return; }
         const res: any = {};
         if (!embed.fields) { return; }
         for (const field of embed.fields) {
