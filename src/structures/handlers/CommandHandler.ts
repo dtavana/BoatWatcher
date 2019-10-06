@@ -9,12 +9,14 @@ class CommandHandler extends BaseHandler {
     }
 
     public async run(message: Message): Promise<void> {
+        if (message.author.bot) { return; }
         const command: any[] | false = await this.parseCommand(message);
         if (command === false) {
             return; // Message was not detected as a command
         }
         const foundCommand = command[0];
         const argsToLookAt = command[1];
+        if (foundCommand.ownerOnly && !this.client.config.OWNERS.includes(message.author.id)) { return; }
         const args: any[] | string | null = await this.parseArgs(message, foundCommand, argsToLookAt);
         if (typeof args === 'string') {
             const ctx = new Context(this.client, message, null);
@@ -36,14 +38,12 @@ class CommandHandler extends BaseHandler {
         const prefix: string = guildPrefix ? guildPrefix : this.client.defaultPrefix;
         const startsWithPrefix = stringToLookAt.startsWith(prefix);
         if (!startsWithPrefix) {
-            this.client.loggers.sendLog('Skipping command, does not start with the prefix', 'console');
             return false;
         }
         const commandRegex = /(^)\w+/;
         stringToLookAt = stringToLookAt.substring(prefix.length);
         const commandName = stringToLookAt.match(commandRegex);
         if (commandName === null) {
-            this.client.loggers.sendLog('Skipping command, could not parse a command name', 'console');
             return false; // RegEx failed
         }
         const command = this.client.commands.get(commandName[0]);
@@ -57,7 +57,6 @@ class CommandHandler extends BaseHandler {
                 argsToLookAt,
             ];
         } else {
-            this.client.loggers.sendLog(`Skipping command, could not find a ${stringToLookAt} command`, 'console');
             return false;
         }
     }
@@ -118,7 +117,7 @@ class CommandHandler extends BaseHandler {
                     const appliedType = await typeHandler.parse(arg, message, pArg);
                     res.push(appliedType);
                 } else {
-                    return new Error(`Could not parse \`${arg}\` to a **${argType}**`).toString();
+                    return new Error(`Could not parse ${arg} to a **${argType}**`).toString();
                 }
             } else {
                 return new Error(`Could not find type ${argType} as a registered type`).toString();
