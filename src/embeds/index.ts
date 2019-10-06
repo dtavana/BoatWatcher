@@ -1,12 +1,5 @@
-import {sendCustom} from './sendCustom';
-import {sendError} from './sendError';
-import {sendMessage} from './sendMessage';
-import {sendSuccess} from './sendSuccess';
-
-export const ALL_EMBEDS = {
-    error: sendError,
-    success: sendSuccess,
-    custom: sendCustom,
-};
-
-export { sendMessage };
+export {sendCustom} from './sendCustom';
+export {sendError} from './sendError';
+export {sendLog} from './sendLog';
+export {sendMessage} from './sendMessage';
+export {sendSuccess} from './sendSuccess';

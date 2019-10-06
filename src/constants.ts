@@ -1,4 +1,9 @@
+import {sendCustom, sendError, sendLog, sendSuccess} from './embeds';
+import {GuildJoinEvent, MessageEvent, ReadyEvent} from './events';
+import {LoggerCollection} from './structures/collections';
 import * as ArgumentTypes from './structures/commands/ArgumentTypes';
+import {CommandHandler, ModLogHandler} from './structures/handlers';
+import {ConsoleLogger} from './structures/logging';
 
 export const ARGUMENT_TYPES = {
     'boolean': ArgumentTypes.BooleanArgumentType,
@@ -12,3 +17,25 @@ export const ARGUMENT_TYPES = {
     'text-channel': ArgumentTypes.TextChannelArgumentType,
     'user': ArgumentTypes.UserArgumentType,
 };
+
+export const ALL_EMBEDS = {
+    error: sendError,
+    success: sendSuccess,
+    custom: sendCustom,
+    log: sendLog,
+};
+
+export const ALL_HANDLERS = [
+    CommandHandler,
+    ModLogHandler,
+];
+
+export const ALL_EVENTS = [
+    GuildJoinEvent,
+    MessageEvent,
+    ReadyEvent,
+];
+
+const ALL_LOGGERS: LoggerCollection = new LoggerCollection();
+ALL_LOGGERS.set('console', new ConsoleLogger());
+export { ALL_LOGGERS };
