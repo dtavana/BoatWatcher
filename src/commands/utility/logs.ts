@@ -10,16 +10,17 @@ class LogsCommand extends Command {
             args: [
                 {
                     key: 'bot',
-                    type: 'user',
+                    type: 'string',
                 },
             ],
         });
     }
 
     public async run(ctx, bot) {
-        const logs: IDeclineLogResult[] = await this.client.pg.db.any('SELECT * FROM declinelogs WHERE botid = $1 ORDER BY recorded;', bot.id);
+        if (ctx.guild.id !== this.client.config.DBL_VC_GUILD_ID) { return; }
+        const logs: IDeclineLogResult[] = await this.client.pg.db.any('SELECT * FROM declinelogs WHERE botid = $1 ORDER BY recorded LIMIT 5;', bot);
         if (logs.length === 0) {
-            return await this.client.sendMessage('error', this.client, ctx, `No logs recorded for ${bot.mention}`);
+            return await this.client.sendMessage('error', this.client, ctx, `No logs recorded for \`${bot}\``);
         }
         for (const log of logs) {
             const embed = {
