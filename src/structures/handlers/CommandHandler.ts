@@ -77,18 +77,6 @@ class CommandHandler extends BaseHandler {
         message: Message,
         command: Command,
         args: string[]): Promise<any[] | string | null> {
-        /*
-        TODO: fix command aliases
-        let usableCommandNames: string[] = [];
-        if (command.aliases) {
-            command.aliases.unshift(command.name);
-        } else {
-            usableCommandNames = [command.name];
-        }
-        const argsRegex = usableCommandNames.map(
-            (name) =>  new RegExp(`/((?<=.{${prefix.length + name.length}})\S+)/`, 'g')
-        );
-        */
         const requiredArguments = this.argsToRequire(command.args);
         if (requiredArguments !== null) {
             if (args === null) {
