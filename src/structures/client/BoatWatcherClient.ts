@@ -1,15 +1,13 @@
 import {Client} from 'eris';
+import {join} from 'path';
 import {IBoatWatcherClientConfig} from '..';
-import {TestCommand} from '../../commands/test';
-import {EvalCommand} from '../../commands/utility/eval';
-import {ARGUMENT_TYPES} from '../../constants';
+import * as constants from '../../constants';
 import {sendMessage} from '../../embeds';
-import {MessageEvent, ReadyEvent} from '../../events';
+import {GuildJoinEvent, MessageEvent, ReadyEvent} from '../../events';
 import {PostgresManager} from '../../managers';
 import {LoggerCollection} from '../collections';
 import {Command} from '../commands';
-import {ALL_HANDLERS, BaseHandler} from '../handlers';
-import {ALL_LOGGERS} from '../logging';
+import {BaseHandler} from '../handlers';
 
 class BoatWatcherClient extends Client {
     public config: IBoatWatcherClientConfig;
@@ -51,17 +49,12 @@ class BoatWatcherClient extends Client {
             },
         );
         this.config = config;
-        this.loggers = ALL_LOGGERS;
+        this.loggers = constants.ALL_LOGGERS;
         this.commands = new Map();
-        // TESTING
-        const test = new TestCommand(this);
-        const evalc = new EvalCommand(this);
-        this.commands.set(test.name, test);
-        this.commands.set(evalc.name, evalc);
         this.defaultPrefix = config.DEFAULT_PREFIX;
         this.sendMessage = sendMessage;
         this.types = {};
-        for (const type of Object.entries(ARGUMENT_TYPES)) {
+        for (const type of Object.entries(constants.ARGUMENT_TYPES)) {
             const typeName = type[0];
             const typeHandler = type[1];
             this.loggers.sendLog(`Argument ${typeName} is now trying to register`, 'console');
@@ -69,10 +62,14 @@ class BoatWatcherClient extends Client {
             this.loggers.sendLog(`Argument ${typeName} is now registered`, 'console');
         }
         this.handlers = [];
-        for (const handle of ALL_HANDLERS) {
+        for (const handle of constants.ALL_HANDLERS) {
             const handler = new handle(this);
             this.loggers.sendLog(`Handler ${handle.name} is now registered`, 'console');
             this.handlers.push(handler);
+        }
+
+        for (const event of constants.ALL_EVENTS) {
+            new event(this);
         }
 
         this.addListener('handle-message', async (...data) => {
@@ -84,14 +81,28 @@ class BoatWatcherClient extends Client {
             }
         });
 
-        this.pg = new PostgresManager(this);
+        this.registerCommands(join(__dirname, '../../', 'commands'));
 
+        this.pg = new PostgresManager(this);
         this.connect().then(); // Connect to discord
-        // Initialize events
-        // tslint:disable-next-line:max-line-length
-        // FIXME: Make this an array to easily traverse. Add to constants file. Add all other similar things to the constant file as well
-        new ReadyEvent(this);
-        new MessageEvent(this);
+    }
+    private registerCommands(path: string) {
+        const obj: object = require('require-all')(path);
+        const commands: Command[] = [];
+        for (const group of Object.values(obj)) {
+            for (let command of Object.values(group)) {
+                if (typeof command !== 'function') { command = Object.values(command as object)[0]; }
+                // @ts-ignore
+                const newCommand: Command = new command(this);
+                this.commands.set(newCommand.name, newCommand);
+                if (newCommand.aliases) {
+                    for (const alias of newCommand.aliases) {
+                        this.commands.set(alias, newCommand);
+                    }
+                }
+                this.loggers.sendLog(`Command ${newCommand.name} is now registered`, 'console');
+            }
+        }
     }
 }
 
