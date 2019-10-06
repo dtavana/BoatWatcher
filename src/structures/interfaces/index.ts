@@ -1,0 +1,1 @@
+export { IDeclineLogResult } from './IDeclineLogResult';
