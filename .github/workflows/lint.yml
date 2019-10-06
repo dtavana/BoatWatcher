@@ -1,6 +1,9 @@
-name: BoatWatcher CI
+name: BoatWatcher Lint
 
-on: [push]
+on:
+  push:
+    branches: 
+      - master
 
 jobs:
   build:
