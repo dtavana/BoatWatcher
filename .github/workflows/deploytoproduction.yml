@@ -18,4 +18,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script: ~/Coding/TS/BoatWatcher/scripts/deploytoproduction
+        script: ~/Coding/TS/BoatWatcher/scripts/deploytoproduction.sh
