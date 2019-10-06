@@ -73,11 +73,8 @@ class BoatWatcherClient extends Client {
         }
 
         this.addListener('handle-message', async (...data) => {
-            this.loggers.sendLog('Received message handle event', 'console');
             for (const handle of this.handlers) {
-                this.loggers.sendLog(`Running ${handle.handlerName} handler`, 'console');
                 await handle.run(...data);
-                this.loggers.sendLog(`Ran ${handle.handlerName} handler`, 'console');
             }
         });
 
