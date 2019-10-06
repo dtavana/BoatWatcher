@@ -4,9 +4,9 @@ const { combine, timestamp, label, prettyPrint } = format;
 class BaseLogger {
     public loggerName: string;
     private _logger: Logger;
-    private _loggerOptions: object;
-    private _level: string;
-    private _transports: any;
+    private readonly _loggerOptions: object;
+    private readonly _level: string;
+    private readonly _transports: any;
     constructor(loggerName: string, level: string, ...transports: any[]) {
         this.loggerName = loggerName;
         this._level = level;
