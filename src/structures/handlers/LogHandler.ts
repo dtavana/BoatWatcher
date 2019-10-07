@@ -13,6 +13,7 @@ class LogHandler extends BaseHandler {
         if (ctx.guild.id !== this.client.config.DBL_GUILD_ID || message.channel.id !== this.client.config.DBL_LOG_ID) { return; }
         const res: any = {};
         const original = message.content;
+        if (!original.includes('deleted by')) { return; }
         const botString = original.substring(0, original.indexOf(' by'));
         const botMatches = botString.match(/(?:<@!?)+([0-9]+)>?/);
         if (!botMatches) { return; }
