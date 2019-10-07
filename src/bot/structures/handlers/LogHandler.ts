@@ -18,7 +18,7 @@ class LogHandler extends BaseHandler {
         const botMatches = botString.match(/(?:<@!?)+([0-9]+)>?/);
         if (!botMatches) { return; }
         res.Bot = botMatches[1];
-        const deleterString = original.substring(original.lastIndexOf('by ' + 3));
+        const deleterString = original.substring(original.lastIndexOf('by ') + 3);
         const deleterMatches = deleterString.match(/(?:<@!?)+([0-9]+)>?/);
         if (!deleterMatches) { return; }
         res.Responsible = deleterMatches[1];
