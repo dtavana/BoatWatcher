@@ -40,5 +40,8 @@ dist/**/*
 # ignore yarn.lock
 yarn.lock
 
-#application file
-application.yml
+#bot file
+bot.yml
+
+#server file
+server.yml
