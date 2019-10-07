@@ -15,6 +15,7 @@ export default (client: BoatWatcherClient) => {
     }));
     app.use(routes);
     app.locals.client = client;
+    app.locals.config = config;
     app.locals.db = client.pg.db;
     app.locals.loggers = client.loggers;
     app.listen(
