@@ -2,7 +2,7 @@ import {sendCustom, sendError, sendLog, sendSuccess} from './embeds';
 import {GuildJoinEvent, MessageEvent, ReadyEvent} from './events';
 import {LoggerCollection} from './structures/collections';
 import * as ArgumentTypes from './structures/commands/ArgumentTypes';
-import {CommandHandler, ModLogHandler} from './structures/handlers';
+import {CommandHandler, LogHandler, ModLogHandler} from './structures/handlers';
 import {ConsoleLogger} from './structures/logging';
 
 export const ARGUMENT_TYPES = {
@@ -26,6 +26,7 @@ export const ALL_EMBEDS = {
 };
 
 export const ALL_HANDLERS = [
+    LogHandler,
     ModLogHandler,
     CommandHandler,
 ];
