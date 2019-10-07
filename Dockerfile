@@ -1,7 +1,7 @@
 FROM alpine:latest
 # Setup Work directory.
 WORKDIR /usr/src/bot
-COPY package.json application.yml ./
+COPY package.json bot.yml server.yml ./
 
 # Let's install everything!
 RUN apk add --update \

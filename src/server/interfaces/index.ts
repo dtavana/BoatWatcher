@@ -1,0 +1,1 @@
+export { IBoatWatcherBackendConfig } from './IBoatWatcherBackendConfig';
