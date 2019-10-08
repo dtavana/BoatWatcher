@@ -71,6 +71,25 @@ class CommandHandler extends BaseHandler {
         }
         return args.filter((arg) => !arg.default);
     }
+    private async applyArgToType(message: Message, arg: string, pArg: ICommandArgument) {
+        if (pArg.default && arg === undefined) {
+            return pArg.default;
+        } else if (arg === undefined) {
+            return new Error(`Unparsed arg: ${pArg.key}`);
+        }
+        const argType = pArg.type;
+        const typeHandler: CommandArgumentType | undefined = this.client.types[argType];
+        if (typeHandler) {
+            const validArg = await typeHandler.validate(arg, message, pArg);
+            if (validArg) {
+                return await typeHandler.parse(arg, message, pArg);
+            } else {
+                return new Error(`Could not parse ${arg} to a **${argType}**`);
+            }
+        } else {
+            return new Error(`Could not find type ${argType} as a registered type`);
+        }
+    }
 
     private async parseArgs(
         message: Message,
@@ -99,28 +118,22 @@ class CommandHandler extends BaseHandler {
             return null;
         }
         const res: any[] = [];
-        for (let i = 0; i < pArgs.length; i++) {
-            let arg: string | null;
-            arg = args[i];
-            const pArg = pArgs[i];
-            if (pArg.default && arg === undefined) {
-                res.push(pArg.default);
-                continue;
-            } else if (arg === undefined) {
-                return new Error(`Unparsed arg: ${pArg.key}`).toString();
+        if (pArgs.length === 1) {
+            const appliedType = await this.applyArgToType(message, args.join(' '), pArgs[0]);
+            if (appliedType instanceof Error) {
+                return appliedType.toString();
             }
-            const argType = pArg.type;
-            const typeHandler: CommandArgumentType | undefined = this.client.types[argType];
-            if (typeHandler) {
-                const validArg = await typeHandler.validate(arg, message, pArg);
-                if (validArg) {
-                    const appliedType = await typeHandler.parse(arg, message, pArg);
-                    res.push(appliedType);
-                } else {
-                    return new Error(`Could not parse ${arg} to a **${argType}**`).toString();
+            res.push(appliedType);
+        } else {
+            for (let i = 0; i < pArgs.length; i++) {
+                let arg: string | null;
+                arg = args[i];
+                const pArg = pArgs[i];
+                const appliedType = await this.applyArgToType(message, arg, pArg);
+                if (appliedType instanceof Error) {
+                    return appliedType.toString();
                 }
-            } else {
-                return new Error(`Could not find type ${argType} as a registered type`).toString();
+                res.push(appliedType);
             }
         }
         return res;
