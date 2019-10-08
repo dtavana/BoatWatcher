@@ -25,7 +25,7 @@ class EvalCommand extends Command {
             // tslint:disable-next-line:no-eval
             const res = eval(evalStringCleanedUp);
             let resStr: string;
-            res === undefined ? resStr = 'undefined' : resStr = res;
+            res === undefined ? resStr = 'undefined' : resStr = res.toString();
             options = {
                 color: 65280,
                 fields: [
