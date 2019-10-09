@@ -7,6 +7,7 @@ interface IBoatWatcherClientConfig {
     DBL_GUILD_ID: string;
     DBL_MOD_LOG_ID: string;
     DBL_LOG_ID: string;
+    DBL_MOD_ROLE_ID: string;
     DBL_VC_GUILD_ID: string;
     DBL_VC_LOG_ID: string;
 }
