@@ -52,10 +52,8 @@ class ModLogHandler extends BaseHandler {
     private async handleDeleted(embed: EmbedOptions) {
         if (!embed.fields) { return; }
         const res = await this.parseFields(embed.fields);
-        const botDeletedByMod = await this.client.pg.db.oneOrNone('SELECT * FROM deletedlogs WHERE botid = $1 AND recorded + interval \'10 seconds\' > NOW();', res.Bot);
-        if (botDeletedByMod) {
-            await this.client.pg.db.none('UPDATE deletedlogs SET reason = $1 WHERE botid = $2 AND recordid = $3;', [res.Reason, res.Bot, botDeletedByMod.recordid]);
-        }
+        await this.client.pg.db.none('INSERT INTO deletedlogs (botid, responsible, reason) VALUES ($1, $2, $3);', [res.Bot, res.Moderator, res.Reason]);
+
     }
 }
 
