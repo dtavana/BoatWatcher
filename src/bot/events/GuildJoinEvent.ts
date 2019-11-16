@@ -8,7 +8,7 @@ class GuildJoinEvent extends BaseEvent {
     constructor(client: BoatWatcherClient) {
         super(client, 'guildMemberAdd', async (guild: Guild, member: Member) => {
             if (guild.id !== client.config.DBL_VC_GUILD_ID || !member.bot) { return; }
-            const logs: IDeclineLogResult[] = await client.pg.db.any('SELECT * FROM declinelogs WHERE botid = $1 ORDER BY recorded;', member.id);
+            const logs: IDeclineLogResult[] = await client.pg.db.any('SELECT * FROM declinelogs WHERE botid = $1 ORDER BY recorded DESC;', member.id);
             if (logs.length === 0) {
                 return;
             }
